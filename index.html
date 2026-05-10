@@ -4,938 +4,1092 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wei-Lin Tu | Condensed Matter Physicist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
   <style>
+    /* ── Design tokens ── */
+    :root {
+      --white:   #ffffff;
+      --bg:      #f6f7fb;
+      --text:    #1a1a28;
+      --text2:   #4a505e;
+      --text3:   #9299a8;
+      --accent:  #3a5f96;
+      --acl:     rgba(58,95,150,0.07);
+      --border:  #e4e7ef;
+      --nav-h:   62px;
+      --wrap:    900px;
+    }
+
     /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Georgia', serif;
-      display: flex;
-      min-height: 100vh;
-      background: #f4f6fa;
-      color: #111827;
+      font-family: 'Noto Serif JP', Georgia, serif;
+      background: var(--white);
+      color: var(--text);
+      line-height: 1.85;
+      padding-top: var(--nav-h);
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ════════════════════════════
-       SIDEBAR
-    ════════════════════════════ */
-    #sidebar {
-      width: 270px;
-      min-height: 100vh;
-      background: #080d1a;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2.5rem 1.4rem 2rem;
+    /* ══════════════════════════
+       NAV
+    ══════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
       z-index: 200;
-      overflow: hidden;
     }
 
-    #qai-bg {
-      position: absolute;
-      inset: 0; width: 100%; height: 100%;
-      pointer-events: none;
+    .nav-inner {
+      max-width: var(--wrap); margin: 0 auto;
+      height: 100%; padding: 0 2rem;
+      display: flex; align-items: center;
+      justify-content: space-between;
     }
 
-    .node { animation: pulse 3s ease-in-out infinite; }
-    .node:nth-child(2)  { animation-delay: 0.5s; }
-    .node:nth-child(3)  { animation-delay: 1.0s; }
-    .node:nth-child(4)  { animation-delay: 1.5s; }
-    .node:nth-child(5)  { animation-delay: 2.0s; }
-    .node:nth-child(6)  { animation-delay: 0.8s; }
-    .node:nth-child(7)  { animation-delay: 1.3s; }
-    .node:nth-child(8)  { animation-delay: 1.8s; }
-    .node:nth-child(9)  { animation-delay: 2.3s; }
-    .node:nth-child(10) { animation-delay: 0.3s; }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.45; r: 3; }
-      50%       { opacity: 1;    r: 5; }
-    }
-    .wave-path  { animation: waveDrift 6s ease-in-out infinite; }
-    .wave-path2 { animation: waveDrift 8s ease-in-out infinite reverse; animation-delay: 2s; }
-    @keyframes waveDrift {
-      0%, 100% { stroke-dashoffset: 0;   opacity: 0.18; }
-      50%       { stroke-dashoffset: -40; opacity: 0.32; }
-    }
-    .edge { animation: edgeFade 4s ease-in-out infinite; }
-    .edge:nth-child(odd) { animation-delay: 1s; }
-    @keyframes edgeFade {
-      0%, 100% { opacity: 0.08; }
-      50%       { opacity: 0.25; }
+    .nav-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 400; font-size: 0.92rem;
+      color: var(--text); text-decoration: none;
+      letter-spacing: 0.04em;
     }
 
-    .sb-inner {
+    .nav-right {
+      display: flex; align-items: center; gap: 2rem;
+    }
+
+    .nav-link {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.71rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text2);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--accent); }
+
+    /* Language toggle */
+    .lang-tog {
+      display: flex; align-items: center;
+      border: 1px solid var(--border); border-radius: 4px;
+      overflow: hidden; margin-left: 0.2rem;
+    }
+    .lt-btn {
+      background: none; border: none;
+      padding: 0.26rem 0.62rem;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.66rem; letter-spacing: 0.06em;
+      color: var(--text3); cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lt-btn.active { background: var(--accent); color: #fff; }
+    .lt-btn:not(.active):hover { color: var(--text); }
+    .lt-sep { width: 1px; background: var(--border); height: 1rem; }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
+    .hero-section {
+      padding: 6rem 2rem 5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+
+    .hero-grid {
+      max-width: var(--wrap); margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      align-items: center; gap: 4rem;
+    }
+
+    .hero-eye {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.63rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.2rem; display: block;
+    }
+
+    .hero-name {
+      font-weight: 300; font-size: 3rem;
+      line-height: 1.12; letter-spacing: -0.01em;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-pos {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.83rem; color: var(--text2);
+      margin-bottom: 0.15rem;
+    }
+
+    .hero-uni {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.78rem; color: var(--text3);
+      margin-bottom: 2rem;
+    }
+
+    .hero-bio {
+      font-size: 0.93rem; line-height: 1.95;
+      color: var(--text2); max-width: 520px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-links {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    .h-link {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.69rem; letter-spacing: 0.06em;
+      color: var(--text2); text-decoration: none;
+      border: 1px solid var(--border); border-radius: 3px;
+      padding: 0.26rem 0.65rem;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    .h-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Photo column */
+    .hero-photo-wrap {
+      position: relative; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    /* Quantum/AI decoration for light background */
+    .qai-deco {
+      position: absolute; inset: -40px;
+      width: calc(100% + 80px); height: calc(100% + 80px);
+      pointer-events: none; opacity: 1;
+    }
+
+    .qai-node { animation: qPulse 3.2s ease-in-out infinite; }
+    .qai-node:nth-child(2) { animation-delay: 0.6s; }
+    .qai-node:nth-child(3) { animation-delay: 1.2s; }
+    .qai-node:nth-child(4) { animation-delay: 1.8s; }
+    .qai-node:nth-child(5) { animation-delay: 0.9s; }
+    .qai-node:nth-child(6) { animation-delay: 2.1s; }
+    @keyframes qPulse {
+      0%,100% { opacity: 0.18; }
+      50%      { opacity: 0.45; }
+    }
+    .qai-wave { animation: qWave 7s ease-in-out infinite; stroke-dasharray: 6 5; }
+    .qai-wave2 { animation: qWave 9s ease-in-out infinite reverse; animation-delay: 2s; stroke-dasharray: 4 6; }
+    @keyframes qWave {
+      0%,100% { stroke-dashoffset: 0; opacity: 0.13; }
+      50%      { stroke-dashoffset: -30; opacity: 0.26; }
+    }
+    .qai-edge { animation: qEdge 4.5s ease-in-out infinite; }
+    .qai-edge:nth-child(odd) { animation-delay: 1.2s; }
+    @keyframes qEdge {
+      0%,100% { opacity: 0.07; }
+      50%      { opacity: 0.18; }
+    }
+
+    .hero-photo {
       position: relative; z-index: 1;
-      width: 100%; display: flex;
-      flex-direction: column; align-items: center;
-      height: 100%;
+      width: 180px; height: 180px;
+      border-radius: 50%; object-fit: cover;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(58,95,150,0.1);
     }
 
-    /* Language switch */
-    .lang-switch {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 1.6rem;
-      border: 1px solid rgba(99,179,237,0.25);
-      border-radius: 6px;
-      overflow: hidden;
+    /* Keywords strip */
+    .hero-kw-strip {
+      max-width: var(--wrap); margin: 2.8rem auto 0; padding: 0 2rem;
+      padding-top: 2rem; border-top: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
     }
-    .ls-btn {
-      background: transparent;
-      border: none;
-      color: rgba(147,197,253,0.55);
-      font-family: 'Arial', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      padding: 0.35rem 0.75rem;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+
+    .kw {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.71rem; padding: 0.22rem 0.65rem;
+      border: 1px solid rgba(58,95,150,0.22);
+      border-radius: 2px; color: var(--accent);
+      background: var(--acl); letter-spacing: 0.03em;
     }
-    .ls-btn:hover { color: #fff; }
-    .ls-btn.active {
-      background: rgba(99,179,237,0.2);
-      color: #fff;
+
+    /* ══════════════════════════
+       CONTENT SECTIONS
+    ══════════════════════════ */
+    .section { padding: 5rem 2rem; border-bottom: 1px solid var(--border); }
+    .section.alt { background: var(--bg); }
+    .section:last-of-type { border-bottom: none; }
+
+    .wrap { max-width: var(--wrap); margin: 0 auto; }
+
+    .sec-hd { margin-bottom: 3rem; }
+
+    .sec-eye {
+      display: block;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 0.6rem;
     }
-    .ls-sep {
-      width: 1px;
-      height: 1.4rem;
-      background: rgba(99,179,237,0.25);
+
+    .sec-ttl {
+      font-weight: 300; font-size: 1.7rem;
+      color: var(--text); letter-spacing: -0.01em;
+    }
+
+    /* Body text */
+    .body-text {
+      font-size: 0.94rem; line-height: 1.95;
+      color: var(--text2); max-width: 640px;
+    }
+    .body-text + .body-text { margin-top: 1.2rem; }
+
+    /* ══════════════════════════
+       TIMELINE
+    ══════════════════════════ */
+    .tl-item {
+      display: grid;
+      grid-template-columns: 172px 1fr;
+      gap: 0 2.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-item:first-child { padding-top: 0; }
+    .tl-item:last-child  { border-bottom: none; padding-bottom: 0; }
+
+    .tl-date {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.72rem; color: var(--text3);
+      letter-spacing: 0.03em; padding-top: 0.18rem;
+      line-height: 1.6;
+    }
+
+    .tl-role {
+      font-size: 0.97rem; color: var(--text);
+      margin-bottom: 0.2rem; font-weight: 400;
+    }
+
+    .tl-org {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.83rem; color: var(--text2);
+    }
+
+    .tl-dept {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.76rem; color: var(--text3);
+      margin-top: 0.12rem;
+    }
+
+    .badge {
+      display: inline-block; padding: 0.07rem 0.38rem;
+      border-radius: 2px;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.07em;
+      text-transform: uppercase; vertical-align: middle;
+      margin-left: 0.45rem;
+    }
+    .badge-now  { background: #ecfdf5; color: #065f46; }
+    .badge-book { background: #eef2ff; color: #3730a3; }
+    .badge-data { background: #fffbeb; color: #92400e; }
+
+    /* ══════════════════════════
+       PUBLICATIONS
+    ══════════════════════════ */
+    .pub-yr-row {
+      display: flex; align-items: center;
+      gap: 1rem; margin: 3rem 0 0.8rem;
+    }
+    .pub-yr-row:first-child { margin-top: 0; }
+
+    .pub-yr {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      color: var(--accent); font-weight: 500;
       flex-shrink: 0;
     }
 
-    .profile-photo {
-      width: 110px; height: 110px;
-      border-radius: 50%;
-      border: 2.5px solid rgba(99,179,237,0.55);
-      box-shadow: 0 0 24px rgba(99,179,237,0.25);
-      object-fit: cover;
-      margin-bottom: 1.1rem;
-    }
-    .sb-name  { font-size: 1.1rem; color: #fff; font-weight: normal; text-align: center; margin-bottom: 0.3rem; }
-    .sb-role  { font-family: 'Arial', sans-serif; font-size: 0.7rem; color: rgba(147,197,253,0.85); text-align: center; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 0.15rem; }
-    .sb-affil { font-family: 'Arial', sans-serif; font-size: 0.7rem; color: rgba(147,197,253,0.55); text-align: center; margin-bottom: 1.8rem; }
+    .pub-yr-line { flex: 1; height: 1px; background: var(--border); }
 
-    .sb-nav { width: 100%; margin-bottom: 1.2rem; }
-    .sb-nav a {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.46rem 0.9rem; border-radius: 6px;
-      font-family: 'Arial', sans-serif; font-size: 0.77rem;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      text-decoration: none; color: rgba(196,220,255,0.65);
-      transition: background 0.2s, color 0.2s; margin-bottom: 0.1rem;
+    .pub-row {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0 1.2rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
     }
-    .sb-nav a:hover { background: rgba(99,179,237,0.15); color: #fff; }
-    .sb-nav a .nav-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(99,179,237,0.5); flex-shrink: 0;
+    .pub-row:last-child { border-bottom: none; }
+
+    .pub-n {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.7rem; color: var(--text3);
+      text-align: right; padding-top: 0.2rem;
     }
 
-    .sb-divider { width: 100%; border: none; border-top: 1px solid rgba(99,179,237,0.12); margin: 0.8rem 0; }
-    .sb-links { width: 100%; margin-top: auto; }
-    .sb-link {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-family: 'Arial', sans-serif; font-size: 0.71rem;
-      color: rgba(147,197,253,0.55); text-decoration: none;
-      padding: 0.25rem 0; transition: color 0.2s; word-break: break-all;
-    }
-    .sb-link:hover { color: rgba(147,197,253,1); }
-    .sb-link-icon { font-size: 0.9rem; flex-shrink: 0; }
-
-    /* ════════════════════════════
-       MAIN CONTENT
-    ════════════════════════════ */
-    #main { margin-left: 270px; flex: 1; background: #fff; min-height: 100vh; }
-
-    /* Hero */
-    #hero, #hero-ja {
-      padding: 5rem 4rem 4rem;
-      background: linear-gradient(160deg, #f0f4ff 0%, #e8f0fb 60%, #f8f9fc 100%);
-      border-bottom: 1px solid #dde3ef;
-    }
-    .hero-eyebrow {
-      font-family: 'Arial', sans-serif; font-size: 0.72rem;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: #4a7fc1; margin-bottom: 0.8rem;
-    }
-    #hero h1, #hero-ja h1 {
-      font-size: 2.8rem; font-weight: normal; color: #0a0d1a;
-      line-height: 1.15; margin-bottom: 0.6rem; letter-spacing: -0.01em;
-    }
-    .hero-sub {
-      font-family: 'Arial', sans-serif; font-size: 1rem;
-      color: #4a7fc1; margin-bottom: 1.6rem;
-    }
-    #hero p, #hero-ja p {
-      font-size: 1rem; color: #374151; line-height: 1.85; max-width: 620px;
-    }
-    .keywords { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.6rem; }
-    .kw {
-      background: rgba(74,127,193,0.1); color: #2c4a8a;
-      border: 1px solid rgba(74,127,193,0.25);
-      padding: 0.28rem 0.75rem; border-radius: 20px;
-      font-family: 'Arial', sans-serif; font-size: 0.77rem;
+    .pub-title {
+      font-size: 0.91rem; color: var(--text);
+      line-height: 1.55; margin-bottom: 0.22rem;
     }
 
-    /* Sections */
-    .section { padding: 4rem; border-bottom: 1px solid #f0f2f7; }
-    .section:last-child { border-bottom: none; }
-    .sec-label {
-      font-family: 'Arial', sans-serif; font-size: 0.68rem;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: #4a7fc1; margin-bottom: 0.4rem;
+    .pub-meta {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.77rem; color: var(--text3);
     }
-    h2 {
-      font-size: 1.65rem; font-weight: normal; color: #0a0d1a;
-      margin-bottom: 2rem; padding-bottom: 0.7rem;
-      border-bottom: 1px solid #eef0f5;
-    }
+    .pub-j { font-style: italic; }
 
-    /* Timeline */
-    .timeline { position: relative; padding-left: 1rem; }
-    .timeline::before {
-      content: ''; position: absolute; left: 0; top: 10px; bottom: 10px;
-      width: 1px; background: #dde3ef;
+    .pub-doi {
+      display: inline-block; margin-top: 0.18rem;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.7rem; color: var(--accent); text-decoration: none;
     }
-    .tl-item { position: relative; padding-left: 1.6rem; margin-bottom: 2.2rem; }
-    .tl-item:last-child { margin-bottom: 0; }
-    .tl-item::before {
-      content: ''; position: absolute; left: -1.28rem; top: 0.6rem;
-      width: 9px; height: 9px; border-radius: 50%;
-      background: #4a7fc1; border: 2px solid #fff; box-shadow: 0 0 0 1.5px #4a7fc1;
-    }
-    .tl-date { font-family: 'Arial', sans-serif; font-size: 0.73rem; color: #4a7fc1; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 0.2rem; }
-    .tl-role { font-size: 1rem; color: #0a0d1a; margin-bottom: 0.15rem; }
-    .tl-org  { font-family: 'Arial', sans-serif; font-size: 0.88rem; color: #6b7280; }
-    .tl-dept { font-family: 'Arial', sans-serif; font-size: 0.8rem; color: #9ca3af; margin-top: 0.1rem; }
-
-    .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 3px; font-family: 'Arial', sans-serif; font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; vertical-align: middle; margin-left: 0.5rem; }
-    .badge-current { background: #dcfce7; color: #166534; }
-    .badge-book    { background: #e0e7ff; color: #3730a3; }
-    .badge-data    { background: #fef3c7; color: #92400e; }
-
-    /* Publications */
-    .pub-group { margin-bottom: 2.5rem; }
-    .pub-year {
-      font-family: 'Arial', sans-serif; font-size: 0.8rem; font-weight: bold;
-      letter-spacing: 0.1em; color: #4a7fc1; text-transform: uppercase;
-      padding-bottom: 0.4rem; border-bottom: 1px solid #eef0f5; margin-bottom: 1rem;
-    }
-    .pub-item {
-      display: flex; gap: 0.9rem; padding: 0.9rem 1rem; border-radius: 6px;
-      border: 1px solid #f0f2f7; margin-bottom: 0.6rem;
-      transition: border-color 0.18s, box-shadow 0.18s; background: #fafbfc;
-    }
-    .pub-item:hover { border-color: #c7d7ef; box-shadow: 0 2px 10px rgba(44,74,138,0.07); background: #fff; }
-    .pub-num { font-family: 'Arial', sans-serif; font-size: 0.75rem; color: #9ca3af; min-width: 22px; padding-top: 0.2rem; text-align: right; flex-shrink: 0; }
-    .pub-body { flex: 1; }
-    .pub-title { font-size: 0.95rem; color: #0a0d1a; line-height: 1.45; margin-bottom: 0.25rem; }
-    .pub-meta  { font-family: 'Arial', sans-serif; font-size: 0.8rem; color: #6b7280; }
-    .pub-journal { font-style: italic; }
-    .pub-doi { display: inline-block; margin-top: 0.25rem; font-family: 'Arial', sans-serif; font-size: 0.74rem; color: #4a7fc1; text-decoration: none; }
     .pub-doi:hover { text-decoration: underline; }
 
-    /* Footer */
-    footer { background: #f4f6fa; border-top: 1px solid #eef0f5; padding: 1.8rem 4rem; font-family: 'Arial', sans-serif; font-size: 0.78rem; color: #9ca3af; }
-    footer a { color: #6b7280; text-decoration: none; }
-    footer a:hover { color: #4a7fc1; }
+    /* ══════════════════════════
+       FOOTER
+    ══════════════════════════ */
+    footer {
+      padding: 2.8rem 2rem; text-align: center;
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+      font-size: 0.73rem; color: var(--text3);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--text2); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
 
-    /* Responsive */
-    @media (max-width: 780px) {
-      body { flex-direction: column; }
-      #sidebar { position: relative; width: 100%; min-height: auto; padding: 2rem 1.2rem; }
-      .sb-links { margin-top: 1rem; }
-      #main { margin-left: 0; }
-      #hero, #hero-ja, .section { padding: 2.5rem 1.5rem; }
-      #hero h1, #hero-ja h1 { font-size: 2rem; }
+    /* ══════════════════════════
+       RESPONSIVE
+    ══════════════════════════ */
+    @media (max-width: 680px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-photo-wrap { order: -1; margin-bottom: 1rem; }
+      .hero-name { font-size: 2.2rem; }
+      .tl-item { grid-template-columns: 1fr; gap: 0.25rem; }
+      .nav-right .nav-link { display: none; }
+      .hero-section, .section { padding-left: 1.2rem; padding-right: 1.2rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- ════════ SIDEBAR ════════ -->
-<aside id="sidebar">
-
-  <!-- Quantum + AI animated SVG background -->
-  <svg id="qai-bg" viewBox="0 0 270 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"   stop-color="#63b3ed" stop-opacity="0.6"/>
-        <stop offset="100%" stop-color="#63b3ed" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-    <g fill="none" stroke="#63b3ed" stroke-width="0.6">
-      <line class="edge" x1="40"  y1="120" x2="130" y2="200"/>
-      <line class="edge" x1="130" y1="200" x2="220" y2="150"/>
-      <line class="edge" x1="220" y1="150" x2="200" y2="280"/>
-      <line class="edge" x1="130" y1="200" x2="200" y2="280"/>
-      <line class="edge" x1="60"  y1="300" x2="130" y2="200"/>
-      <line class="edge" x1="60"  y1="300" x2="200" y2="280"/>
-      <line class="edge" x1="200" y1="280" x2="240" y2="400"/>
-      <line class="edge" x1="60"  y1="300" x2="90"  y2="430"/>
-      <line class="edge" x1="90"  y1="430" x2="240" y2="400"/>
-      <line class="edge" x1="150" y1="500" x2="90"  y2="430"/>
-      <line class="edge" x1="150" y1="500" x2="240" y2="400"/>
-      <line class="edge" x1="30"  y1="560" x2="90"  y2="430"/>
-      <line class="edge" x1="30"  y1="560" x2="150" y2="500"/>
-      <line class="edge" x1="210" y1="590" x2="150" y2="500"/>
-      <line class="edge" x1="210" y1="590" x2="240" y2="400"/>
-      <line class="edge" x1="80"  y1="680" x2="30"  y2="560"/>
-      <line class="edge" x1="80"  y1="680" x2="210" y2="590"/>
-      <line class="edge" x1="180" y1="750" x2="210" y2="590"/>
-      <line class="edge" x1="180" y1="750" x2="80"  y2="680"/>
-      <line class="edge" x1="50"  y1="820" x2="80"  y2="680"/>
-      <line class="edge" x1="240" y1="820" x2="180" y2="750"/>
-      <line class="edge" x1="40"  y1="120" x2="220" y2="150"/>
-    </g>
-    <path class="wave-path"  d="M0,370 Q40,340 80,370 Q120,400 160,370 Q200,340 240,370 Q270,385 270,370" fill="none" stroke="#90cdf4" stroke-width="1.2" stroke-dasharray="6 4"/>
-    <path class="wave-path2" d="M0,640 Q45,610 90,640 Q135,670 180,640 Q225,610 270,640" fill="none" stroke="#90cdf4" stroke-width="1" stroke-dasharray="4 6"/>
-    <path class="wave-path"  d="M0,180 Q35,155 70,180 Q105,205 140,180 Q175,155 210,180 Q240,200 270,180" fill="none" stroke="#7ec8e3" stroke-width="0.8" stroke-dasharray="5 5" style="animation-delay:3s"/>
-    <ellipse cx="135" cy="350" rx="55" ry="20" fill="url(#glow)" opacity="0.12"/>
-    <ellipse cx="135" cy="620" rx="45" ry="18" fill="url(#glow)" opacity="0.10"/>
-    <circle class="node" cx="40"  cy="120" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="130" cy="200" r="4"   fill="#90cdf4"/>
-    <circle class="node" cx="220" cy="150" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="200" cy="280" r="3.5" fill="#7ec8e3"/>
-    <circle class="node" cx="60"  cy="300" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="240" cy="400" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="90"  cy="430" r="4"   fill="#90cdf4"/>
-    <circle class="node" cx="150" cy="500" r="3.5" fill="#7ec8e3"/>
-    <circle class="node" cx="30"  cy="560" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="210" cy="590" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="80"  cy="680" r="4"   fill="#90cdf4"/>
-    <circle class="node" cx="180" cy="750" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="50"  cy="820" r="3"   fill="#63b3ed"/>
-    <circle class="node" cx="240" cy="820" r="3"   fill="#63b3ed"/>
-  </svg>
-
-  <div class="sb-inner">
-
-    <!-- Language toggle -->
-    <div class="lang-switch">
-      <button class="ls-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-      <div class="ls-sep"></div>
-      <button class="ls-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero-en">Wei-Lin Tu</a>
+    <div class="nav-right">
+      <a class="nav-link" data-base="about"        data-en="About"        data-ja="概要"   href="#about-en">About</a>
+      <a class="nav-link" data-base="experience"   data-en="Experience"   data-ja="経歴"   href="#exp-en">Experience</a>
+      <a class="nav-link" data-base="education"    data-en="Education"    data-ja="学歴"   href="#edu-en">Education</a>
+      <a class="nav-link" data-base="publications" data-en="Publications" data-ja="業績"   href="#pub-en">Publications</a>
+      <div class="lang-tog">
+        <button class="lt-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <div class="lt-sep"></div>
+        <button class="lt-btn" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      </div>
     </div>
-
-    <img class="profile-photo" src="https://avatars.githubusercontent.com/u/33544190?v=4" alt="Wei-Lin Tu" />
-
-    <p class="sb-name" id="sb-name">Wei-Lin Tu</p>
-    <p class="sb-role" id="sb-role">Project Lecturer</p>
-    <p class="sb-affil" id="sb-affil">Keio University, Japan</p>
-
-    <nav class="sb-nav">
-      <a data-base="hero"         data-en="About"        data-ja="概要"   href="#hero"><span class="nav-dot"></span>About</a>
-      <a data-base="experience"   data-en="Experience"   data-ja="経歴"   href="#experience"><span class="nav-dot"></span>Experience</a>
-      <a data-base="education"    data-en="Education"    data-ja="学歴"   href="#education"><span class="nav-dot"></span>Education</a>
-      <a data-base="publications" data-en="Publications" data-ja="業績"   href="#publications"><span class="nav-dot"></span>Publications</a>
-    </nav>
-
-    <hr class="sb-divider" />
-
-    <div class="sb-links">
-      <a class="sb-link" href="mailto:weilintu@keio.jp"><span class="sb-link-icon">&#9993;</span>weilintu@keio.jp</a>
-      <a class="sb-link" href="https://orcid.org/0000-0002-3340-4963"               target="_blank" rel="noopener"><span class="sb-link-icon">&#127758;</span>ORCID</a>
-      <a class="sb-link" href="https://scholar.google.com/citations?user=oEdpJ1UAAAAJ" target="_blank" rel="noopener"><span class="sb-link-icon">&#128218;</span>Google Scholar</a>
-      <a class="sb-link" href="https://www.researchgate.net/profile/Wei-Lin-Tu"     target="_blank" rel="noopener"><span class="sb-link-icon">&#128196;</span>ResearchGate</a>
-      <a class="sb-link" href="https://researchmap.jp/weilintu"                     target="_blank" rel="noopener"><span class="sb-link-icon">&#128205;</span>researchmap</a>
-      <a class="sb-link" href="https://twitter.com/weilin_tu"                       target="_blank" rel="noopener"><span class="sb-link-icon">&#120143;</span>@weilin_tu</a>
-      <a class="sb-link" href="https://github.com/weilintu"                         target="_blank" rel="noopener"><span class="sb-link-icon">&#128279;</span>GitHub</a>
-    </div>
-
   </div>
-</aside>
+</nav>
 
-<!-- ════════ MAIN CONTENT ════════ -->
-<main id="main">
+<!-- ══════════ ENGLISH ══════════ -->
+<div id="content-en">
 
-  <!-- ══ ENGLISH CONTENT ══ -->
-  <div id="content-en">
+  <!-- Hero -->
+  <div class="hero-section" id="hero-en">
+    <div class="hero-grid">
 
-    <section id="hero">
-      <p class="hero-eyebrow">Theoretical Condensed Matter Physics</p>
-      <h1>Wei-Lin Tu</h1>
-      <p class="hero-sub">Project Lecturer &mdash; Faculty of Science and Technology, Keio University</p>
-      <p>My research centers on tensor network ansätze&mdash;matrix product states (MPS) and projected entangled-pair states (PEPS)&mdash;as powerful computational frameworks for understanding quantum many-body systems, quantum magnetism, cold-atomic systems, and correlated fermionic materials, including high-temperature superconductors.</p>
-      <div class="keywords">
-        <span class="kw">Tensor Networks</span>
-        <span class="kw">MPS &amp; PEPS</span>
-        <span class="kw">Quantum Many-Body Systems</span>
-        <span class="kw">Condensed Matter Theory</span>
-        <span class="kw">Quantum Magnetism</span>
-        <span class="kw">Superconductivity</span>
-        <span class="kw">Cold Atomic Systems</span>
+      <div class="hero-left">
+        <span class="hero-eye">Theoretical Condensed Matter Physics</span>
+        <h1 class="hero-name">Wei-Lin Tu</h1>
+        <p class="hero-pos">Project Lecturer</p>
+        <p class="hero-uni">Faculty of Science and Technology, Keio University</p>
+        <p class="hero-bio">My research centres on tensor network ansätze — matrix product states (MPS) and projected entangled-pair states (PEPS) — applied to quantum many-body systems, quantum magnetism, cold-atomic systems, and correlated fermionic materials including high-temperature superconductors.</p>
+        <div class="hero-links">
+          <a class="h-link" href="mailto:weilintu@keio.jp">Email</a>
+          <a class="h-link" href="https://orcid.org/0000-0002-3340-4963"               target="_blank" rel="noopener">ORCID</a>
+          <a class="h-link" href="https://scholar.google.com/citations?user=oEdpJ1UAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+          <a class="h-link" href="https://www.researchgate.net/profile/Wei-Lin-Tu"     target="_blank" rel="noopener">ResearchGate</a>
+          <a class="h-link" href="https://researchmap.jp/weilintu"                     target="_blank" rel="noopener">researchmap</a>
+          <a class="h-link" href="https://twitter.com/weilin_tu"                       target="_blank" rel="noopener">X / Twitter</a>
+          <a class="h-link" href="https://github.com/weilintu"                         target="_blank" rel="noopener">GitHub</a>
+        </div>
       </div>
-    </section>
 
-    <section class="section" id="about">
-      <p class="sec-label">About</p>
-      <h2>Research Overview</h2>
-      <p style="line-height:1.85;color:#374151;font-size:1rem;max-width:660px;">I am a theoretical condensed matter physicist with a focus on developing and applying tensor network methods to strongly correlated quantum systems. My work spans from foundational algorithmic advances&mdash;such as variational tensor network operators and generating functions for diagrammatic summation&mdash;to physical applications including quantum phase transitions, supersolid phases, Bose-Einstein condensation, and the interplay of orders in cuprate superconductors.</p>
-      <p style="line-height:1.85;color:#374151;font-size:1rem;max-width:660px;margin-top:1rem;">I have held research positions across Japan, South Korea, France, and Taiwan, and I am currently a Project Lecturer at Keio University. My work has been published in leading journals including <em>PRX Quantum</em>, <em>Physical Review Research</em>, <em>Communications Physics</em>, and <em>Scientific Reports</em>.</p>
-    </section>
+      <div class="hero-photo-wrap">
+        <!-- Quantum + AI decoration (light version) -->
+        <svg class="qai-deco" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="#3a5f96" stroke-width="0.9">
+            <line class="qai-edge" x1="30"  y1="60"  x2="150" y2="30"/>
+            <line class="qai-edge" x1="150" y1="30"  x2="265" y2="70"/>
+            <line class="qai-edge" x1="265" y1="70"  x2="275" y2="185"/>
+            <line class="qai-edge" x1="150" y1="30"  x2="185" y2="145"/>
+            <line class="qai-edge" x1="30"  y1="60"  x2="60"  y2="175"/>
+            <line class="qai-edge" x1="60"  y1="175" x2="185" y2="145"/>
+            <line class="qai-edge" x1="185" y1="145" x2="275" y2="185"/>
+            <line class="qai-edge" x1="60"  y1="175" x2="135" y2="260"/>
+            <line class="qai-edge" x1="135" y1="260" x2="250" y2="268"/>
+            <line class="qai-edge" x1="250" y1="268" x2="275" y2="185"/>
+            <line class="qai-edge" x1="185" y1="145" x2="135" y2="260"/>
+          </g>
+          <path class="qai-wave"  d="M15,185 Q55,162 95,185 Q135,208 175,185 Q215,162 255,185 Q278,198 295,185" fill="none" stroke="#3a5f96" stroke-width="1"/>
+          <path class="qai-wave2" d="M15,115 Q50,97  90,115 Q130,133 170,115 Q210,97  250,115 Q278,128 295,115" fill="none" stroke="#3a5f96" stroke-width="0.7"/>
+          <circle class="qai-node" cx="30"  cy="60"  r="3.5" fill="#3a5f96"/>
+          <circle class="qai-node" cx="150" cy="30"  r="4.5" fill="#3a5f96"/>
+          <circle class="qai-node" cx="265" cy="70"  r="3"   fill="#3a5f96"/>
+          <circle class="qai-node" cx="185" cy="145" r="4"   fill="#3a5f96"/>
+          <circle class="qai-node" cx="60"  cy="175" r="3.5" fill="#3a5f96"/>
+          <circle class="qai-node" cx="135" cy="260" r="3.5" fill="#3a5f96"/>
+        </svg>
+        <img class="hero-photo"
+             src="https://avatars.githubusercontent.com/u/33544190?v=4"
+             alt="Wei-Lin Tu" />
+      </div>
 
-    <section class="section" id="experience">
-      <p class="sec-label">Experience</p>
-      <h2>Academic Positions</h2>
-      <div class="timeline">
+    </div><!-- /hero-grid -->
+
+    <div class="hero-kw-strip">
+      <span class="kw">Tensor Networks</span>
+      <span class="kw">MPS &amp; PEPS</span>
+      <span class="kw">Quantum Many-Body Systems</span>
+      <span class="kw">Condensed Matter Theory</span>
+      <span class="kw">Quantum Magnetism</span>
+      <span class="kw">Superconductivity</span>
+      <span class="kw">Cold Atomic Systems</span>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="section" id="about-en">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">About</span>
+        <h2 class="sec-ttl">Research Overview</h2>
+      </div>
+      <p class="body-text">I am a theoretical condensed matter physicist specialising in the development and application of tensor network methods to strongly correlated quantum systems. My work spans foundational algorithmic advances — variational tensor network operators, generating functions for diagrammatic summation — through to physical applications: quantum phase transitions, supersolid phases, Bose–Einstein condensation, and competing orders in cuprate superconductors.</p>
+      <p class="body-text">I have held research positions in Japan, South Korea, France, and Taiwan. I am currently Project Lecturer at Keio University. My work has appeared in <em>PRX Quantum</em>, <em>Physical Review Research</em>, <em>Communications Physics</em>, and <em>Scientific Reports</em>, among others.</p>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div class="section alt" id="exp-en">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">Experience</span>
+        <h2 class="sec-ttl">Academic Positions</h2>
+      </div>
+      <div>
         <div class="tl-item">
-          <p class="tl-date">May 2023 &ndash; Present</p>
-          <p class="tl-role">Project Lecturer <span class="badge badge-current">Current</span></p>
-          <p class="tl-org">Keio University &mdash; Japan</p>
-          <p class="tl-dept">Faculty of Science and Technology</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Mar 2021 &ndash; Apr 2023</p>
-          <p class="tl-role">Research Professor</p>
-          <p class="tl-org">Korea University &mdash; South Korea</p>
-          <p class="tl-dept">Division of Display and Semiconductor Physics</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Mar 2021 &ndash; Feb 2022</p>
-          <p class="tl-role">ISSP Research Fellow</p>
-          <p class="tl-org">University of Tokyo &mdash; Japan</p>
-          <p class="tl-dept">Institute for Solid State Physics (ISSP)</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Oct 2020 &ndash; Feb 2021</p>
-          <p class="tl-role">Project Researcher</p>
-          <p class="tl-org">University of Tokyo &mdash; Japan</p>
-          <p class="tl-dept">Institute for Solid State Physics (ISSP)</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Oct 2019 &ndash; Sep 2020</p>
-          <p class="tl-role">ISSP Research Fellow</p>
-          <p class="tl-org">University of Tokyo &mdash; Japan</p>
-          <p class="tl-dept">Institute for Solid State Physics (ISSP)</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Aug 2012 &ndash; Jul 2018</p>
-          <p class="tl-role">Adjunct Research Assistant</p>
-          <p class="tl-org">Academia Sinica &mdash; Taiwan</p>
-          <p class="tl-dept">Institute of Physics</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="education">
-      <p class="sec-label">Education</p>
-      <h2>Academic Background</h2>
-      <div class="timeline">
-        <div class="tl-item">
-          <p class="tl-date">Sep 2015 &ndash; Sep 2018</p>
-          <p class="tl-role">Ph.D. in Physics</p>
-          <p class="tl-org">Universit&eacute; Paul Sabatier (Toulouse III) &mdash; France</p>
-          <p class="tl-dept">Laboratoire de Physique Th&eacute;orique</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Sep 2012 &ndash; Jun 2018</p>
-          <p class="tl-role">Ph.D. in Physics</p>
-          <p class="tl-org">National Taiwan University &mdash; Taiwan</p>
-          <p class="tl-dept">Department of Physics</p>
-        </div>
-        <div class="tl-item">
-          <p class="tl-date">Sep 2008 &ndash; Jun 2012</p>
-          <p class="tl-role">Bachelor of Science in Physics</p>
-          <p class="tl-org">National Taiwan University &mdash; Taiwan</p>
-          <p class="tl-dept">Department of Physics</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="publications">
-      <p class="sec-label">Publications</p>
-      <h2>Selected Works</h2>
-
-      <div class="pub-group">
-        <div class="pub-year">2026</div>
-        <div class="pub-item">
-          <span class="pub-num">15</span>
-          <div class="pub-body">
-            <p class="pub-title">Dataset for &ldquo;Probing the Dynamical Structure Factor of Quantum Spin Chains&hellip;&rdquo; <span class="badge badge-data">Dataset</span></p>
-            <p class="pub-meta"><span class="pub-journal">Zenodo</span> &middot; January 2026</p>
-            <a class="pub-doi" href="https://doi.org/10.5281/zenodo.18408711" target="_blank" rel="noopener">doi:10.5281/zenodo.18408711</a>
+          <div class="tl-date">May 2023 – Present</div>
+          <div>
+            <p class="tl-role">Project Lecturer <span class="badge badge-now">Current</span></p>
+            <p class="tl-org">Keio University — Japan</p>
+            <p class="tl-dept">Faculty of Science and Technology</p>
           </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2024</div>
-        <div class="pub-item">
-          <span class="pub-num">14</span>
-          <div class="pub-body">
-            <p class="pub-title">Programmable order by disorder effect and underlying phases through dipolar quantum simulators</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review Research</span> &middot; June 2024</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.6.023297" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.6.023297</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">13</span>
-          <div class="pub-body">
-            <p class="pub-title">Generating Function for Projected Entangled-Pair States</p>
-            <p class="pub-meta"><span class="pub-journal">PRX Quantum</span> &middot; March 2024</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PRXQuantum.5.010335" target="_blank" rel="noopener">doi:10.1103/PRXQuantum.5.010335</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2023</div>
-        <div class="pub-item">
-          <span class="pub-num">12</span>
-          <div class="pub-body">
-            <p class="pub-title">Intertwined orders and electronic structure in superconducting vortex halos</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review Research</span> &middot; July 2023</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.5.033028" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.5.033028</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">11</span>
-          <div class="pub-body">
-            <p class="pub-title">Cubic ferromagnet and emergent U(1) symmetry on its phase boundary</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review B</span> &middot; June 2023</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.107.224406" target="_blank" rel="noopener">doi:10.1103/PhysRevB.107.224406</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2022</div>
-        <div class="pub-item">
-          <span class="pub-num">10</span>
-          <div class="pub-body">
-            <p class="pub-title">Variational tensor network operator</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review Research</span> &middot; November 2022</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.4.043153" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.4.043153</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">9</span>
-          <div class="pub-body">
-            <p class="pub-title">Field-induced Bose-Einstein condensation and supersolid in the two-dimensional Kondo necklace</p>
-            <p class="pub-meta"><span class="pub-journal">Communications Physics</span> &middot; May 2022</p>
-            <a class="pub-doi" href="https://doi.org/10.1038/s42005-022-00913-3" target="_blank" rel="noopener">doi:10.1038/s42005-022-00913-3</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2021</div>
-        <div class="pub-item">
-          <span class="pub-num">8</span>
-          <div class="pub-body">
-            <p class="pub-title">Generating function for tensor network diagrammatic summation</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review B</span> &middot; May 2021</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.103.205155" target="_blank" rel="noopener">doi:10.1103/PhysRevB.103.205155</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2020</div>
-        <div class="pub-item">
-          <span class="pub-num">7</span>
-          <div class="pub-body">
-            <p class="pub-title">Competing quantum phases of hard-core bosons with tilted dipole-dipole interaction</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review A</span> &middot; November 2020</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevA.102.053306" target="_blank" rel="noopener">doi:10.1103/PhysRevA.102.053306</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">6</span>
-          <div class="pub-body">
-            <p class="pub-title">Frustration-induced supersolid phases of extended Bose&ndash;Hubbard model in the hard-core limit</p>
-            <p class="pub-meta"><span class="pub-journal">Journal of Physics: Condensed Matter</span> &middot; October 2020</p>
-            <a class="pub-doi" href="https://doi.org/10.1088/1361-648X/aba383" target="_blank" rel="noopener">doi:10.1088/1361-648X/aba383</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2019</div>
-        <div class="pub-item">
-          <span class="pub-num">5</span>
-          <div class="pub-body">
-            <p class="pub-title">Utilization of Renormalized Mean-Field Theory upon Novel Quantum Materials <span class="badge badge-book">Book</span></p>
-            <p class="pub-meta"><span class="pub-journal">Springer Theses</span> &middot; 2019</p>
-            <a class="pub-doi" href="https://doi.org/10.1007/978-981-13-7824-9" target="_blank" rel="noopener">doi:10.1007/978-981-13-7824-9</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">4</span>
-          <div class="pub-body">
-            <p class="pub-title">Evolution of Pairing Orders between Pseudogap and Superconducting Phases of Cuprate Superconductors</p>
-            <p class="pub-meta"><span class="pub-journal">Scientific Reports</span> &middot; February 2019</p>
-            <a class="pub-doi" href="https://doi.org/10.1038/s41598-018-38288-7" target="_blank" rel="noopener">doi:10.1038/s41598-018-38288-7</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2018</div>
-        <div class="pub-item">
-          <span class="pub-num">3</span>
-          <div class="pub-body">
-            <p class="pub-title">Competing orders in the Hofstadter t-J model</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review B</span> &middot; January 2018</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.97.035154" target="_blank" rel="noopener">doi:10.1103/PhysRevB.97.035154</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2017</div>
-        <div class="pub-item">
-          <span class="pub-num">2</span>
-          <div class="pub-body">
-            <p class="pub-title">Incommensurate charge ordered states in the t&ndash;t'&ndash;J model</p>
-            <p class="pub-meta"><span class="pub-journal">New Journal of Physics</span> &middot; January 2017</p>
-            <a class="pub-doi" href="https://doi.org/10.1088/1367-2630/19/1/013028" target="_blank" rel="noopener">doi:10.1088/1367-2630/19/1/013028</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pub-group">
-        <div class="pub-year">2016</div>
-        <div class="pub-item">
-          <span class="pub-num">1</span>
-          <div class="pub-body">
-            <p class="pub-title">Genesis of charge orders in high temperature superconductors</p>
-            <p class="pub-meta"><span class="pub-journal">Scientific Reports</span> &middot; January 2016</p>
-            <a class="pub-doi" href="https://doi.org/10.1038/srep18675" target="_blank" rel="noopener">doi:10.1038/srep18675</a>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <footer>
-      &copy; 2026 Wei-Lin Tu &nbsp;&middot;&nbsp;
-      <a href="https://orcid.org/0000-0002-3340-4963" target="_blank" rel="noopener">ORCID 0000-0002-3340-4963</a>
-      &nbsp;&middot;&nbsp;
-      <a href="mailto:weilintu@keio.jp">weilintu@keio.jp</a>
-    </footer>
-
-  </div><!-- /content-en -->
-
-
-  <!-- ══ JAPANESE CONTENT ══ -->
-  <div id="content-ja" hidden>
-
-    <section id="hero-ja">
-      <p class="hero-eyebrow">理論凝縮系物理学</p>
-      <h1>杜 威霖</h1>
-      <p class="hero-sub">プロジェクト講師 &mdash; 慶應義塾大学 理工学部</p>
-      <p>テンソルネットワーク（TN）アンザッツ&mdash;行列積状態（MPS）および射影絡み合いペア状態（PEPS）&mdash;を計算基盤として，量子多体系・量子磁性・冷却原子系・強相関フェルミオン系（高温超伝導体を含む）の理解を目指した研究を行っています。</p>
-      <div class="keywords">
-        <span class="kw">テンソルネットワーク</span>
-        <span class="kw">MPS・PEPS</span>
-        <span class="kw">量子多体系</span>
-        <span class="kw">凝縮系理論</span>
-        <span class="kw">量子磁性</span>
-        <span class="kw">超伝導</span>
-        <span class="kw">冷却原子系</span>
-      </div>
-    </section>
-
-    <section class="section" id="about-ja">
-      <p class="sec-label">概要</p>
-      <h2>研究概要</h2>
-      <p style="line-height:1.9;color:#374151;font-size:1rem;max-width:660px;">私は，強相関量子系に対するテンソルネットワーク法の開発と応用を専門とする理論凝縮系物理学者です。変分テンソルネットワーク演算子やダイアグラム和のための生成関数といった基礎アルゴリズムの開発から，量子相転移，超固体相，ボース–アインシュタイン凝縮，銅酸化物超伝導体における秩序の競合といった物理現象の解明まで，幅広い研究を行っています。</p>
-      <p style="line-height:1.9;color:#374151;font-size:1rem;max-width:660px;margin-top:1rem;">これまでに日本・韓国・フランス・台湾において研究職を歴任し，現在は慶應義塾大学理工学部のプロジェクト講師を務めています。研究成果は <em>PRX Quantum</em>，<em>Physical Review Research</em>，<em>Communications Physics</em>，<em>Scientific Reports</em> などの国際一流誌に掲載されています。</p>
-    </section>
-
-    <section class="section" id="experience-ja">
-      <p class="sec-label">経歴</p>
-      <h2>学術職歴</h2>
-      <div class="timeline">
-        <div class="tl-item">
-          <p class="tl-date">2023年5月 &ndash; 現在</p>
-          <p class="tl-role">プロジェクト講師 <span class="badge badge-current">現職</span></p>
-          <p class="tl-org">慶應義塾大学 &mdash; 日本</p>
-          <p class="tl-dept">理工学部</p>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2021年3月 &ndash; 2023年4月</p>
-          <p class="tl-role">研究教授</p>
-          <p class="tl-org">高麗大学校 &mdash; 韓国</p>
-          <p class="tl-dept">ディスプレイ・半導体物理学部門</p>
+          <div class="tl-date">Mar 2021 – Apr 2023</div>
+          <div>
+            <p class="tl-role">Research Professor</p>
+            <p class="tl-org">Korea University — South Korea</p>
+            <p class="tl-dept">Division of Display and Semiconductor Physics</p>
+          </div>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2021年3月 &ndash; 2022年2月</p>
-          <p class="tl-role">ISSP特任研究員</p>
-          <p class="tl-org">東京大学 &mdash; 日本</p>
-          <p class="tl-dept">物性研究所（ISSP）</p>
+          <div class="tl-date">Mar 2021 – Feb 2022</div>
+          <div>
+            <p class="tl-role">ISSP Research Fellow</p>
+            <p class="tl-org">University of Tokyo — Japan</p>
+            <p class="tl-dept">Institute for Solid State Physics (ISSP)</p>
+          </div>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2020年10月 &ndash; 2021年2月</p>
-          <p class="tl-role">プロジェクト研究員</p>
-          <p class="tl-org">東京大学 &mdash; 日本</p>
-          <p class="tl-dept">物性研究所（ISSP）</p>
+          <div class="tl-date">Oct 2020 – Feb 2021</div>
+          <div>
+            <p class="tl-role">Project Researcher</p>
+            <p class="tl-org">University of Tokyo — Japan</p>
+            <p class="tl-dept">Institute for Solid State Physics (ISSP)</p>
+          </div>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2019年10月 &ndash; 2020年9月</p>
-          <p class="tl-role">ISSP特任研究員</p>
-          <p class="tl-org">東京大学 &mdash; 日本</p>
-          <p class="tl-dept">物性研究所（ISSP）</p>
+          <div class="tl-date">Oct 2019 – Sep 2020</div>
+          <div>
+            <p class="tl-role">ISSP Research Fellow</p>
+            <p class="tl-org">University of Tokyo — Japan</p>
+            <p class="tl-dept">Institute for Solid State Physics (ISSP)</p>
+          </div>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2012年8月 &ndash; 2018年7月</p>
-          <p class="tl-role">客員研究助手</p>
-          <p class="tl-org">中央研究院 &mdash; 台湾</p>
-          <p class="tl-dept">物理学研究所</p>
+          <div class="tl-date">Aug 2012 – Jul 2018</div>
+          <div>
+            <p class="tl-role">Adjunct Research Assistant</p>
+            <p class="tl-org">Academia Sinica — Taiwan</p>
+            <p class="tl-dept">Institute of Physics</p>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section class="section" id="education-ja">
-      <p class="sec-label">学歴</p>
-      <h2>学術背景</h2>
-      <div class="timeline">
+  <!-- Education -->
+  <div class="section" id="edu-en">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">Education</span>
+        <h2 class="sec-ttl">Academic Background</h2>
+      </div>
+      <div>
         <div class="tl-item">
-          <p class="tl-date">2015年9月 &ndash; 2018年9月</p>
-          <p class="tl-role">理学博士（物理学）</p>
-          <p class="tl-org">ポール・サバティエ大学（トゥールーズ第3大学） &mdash; フランス</p>
-          <p class="tl-dept">理論物理学研究室（LPT）</p>
+          <div class="tl-date">Sep 2015 – Sep 2018</div>
+          <div>
+            <p class="tl-role">Ph.D. in Physics</p>
+            <p class="tl-org">Université Paul Sabatier (Toulouse III) — France</p>
+            <p class="tl-dept">Laboratoire de Physique Théorique</p>
+          </div>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2012年9月 &ndash; 2018年6月</p>
-          <p class="tl-role">理学博士（物理学）</p>
-          <p class="tl-org">国立台湾大学 &mdash; 台湾</p>
-          <p class="tl-dept">物理学科</p>
+          <div class="tl-date">Sep 2012 – Jun 2018</div>
+          <div>
+            <p class="tl-role">Ph.D. in Physics</p>
+            <p class="tl-org">National Taiwan University — Taiwan</p>
+            <p class="tl-dept">Department of Physics</p>
+          </div>
         </div>
         <div class="tl-item">
-          <p class="tl-date">2008年9月 &ndash; 2012年6月</p>
-          <p class="tl-role">理学士（物理学）</p>
-          <p class="tl-org">国立台湾大学 &mdash; 台湾</p>
-          <p class="tl-dept">物理学科</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="publications-ja">
-      <p class="sec-label">業績</p>
-      <h2>主要論文</h2>
-
-      <div class="pub-group">
-        <div class="pub-year">2026</div>
-        <div class="pub-item">
-          <span class="pub-num">15</span>
-          <div class="pub-body">
-            <p class="pub-title">Dataset for &ldquo;Probing the Dynamical Structure Factor of Quantum Spin Chains&hellip;&rdquo; <span class="badge badge-data">データセット</span></p>
-            <p class="pub-meta"><span class="pub-journal">Zenodo</span> &middot; 2026年1月</p>
-            <a class="pub-doi" href="https://doi.org/10.5281/zenodo.18408711" target="_blank" rel="noopener">doi:10.5281/zenodo.18408711</a>
+          <div class="tl-date">Sep 2008 – Jun 2012</div>
+          <div>
+            <p class="tl-role">Bachelor of Science in Physics</p>
+            <p class="tl-org">National Taiwan University — Taiwan</p>
+            <p class="tl-dept">Department of Physics</p>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2024</div>
-        <div class="pub-item">
-          <span class="pub-num">14</span>
-          <div class="pub-body">
-            <p class="pub-title">Programmable order by disorder effect and underlying phases through dipolar quantum simulators</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review Research</span> &middot; 2024年6月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.6.023297" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.6.023297</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">13</span>
-          <div class="pub-body">
-            <p class="pub-title">Generating Function for Projected Entangled-Pair States</p>
-            <p class="pub-meta"><span class="pub-journal">PRX Quantum</span> &middot; 2024年3月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PRXQuantum.5.010335" target="_blank" rel="noopener">doi:10.1103/PRXQuantum.5.010335</a>
-          </div>
+  <!-- Publications -->
+  <div class="section alt" id="pub-en">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">Publications</span>
+        <h2 class="sec-ttl">Selected Works</h2>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2026</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">15</span>
+        <div>
+          <p class="pub-title">Dataset for "Probing the Dynamical Structure Factor of Quantum Spin Chains…" <span class="badge badge-data">Dataset</span></p>
+          <p class="pub-meta"><span class="pub-j">Zenodo</span> · January 2026</p>
+          <a class="pub-doi" href="https://doi.org/10.5281/zenodo.18408711" target="_blank" rel="noopener">doi:10.5281/zenodo.18408711</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2023</div>
-        <div class="pub-item">
-          <span class="pub-num">12</span>
-          <div class="pub-body">
-            <p class="pub-title">Intertwined orders and electronic structure in superconducting vortex halos</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review Research</span> &middot; 2023年7月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.5.033028" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.5.033028</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2024</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">14</span>
+        <div>
+          <p class="pub-title">Programmable order by disorder effect and underlying phases through dipolar quantum simulators</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review Research</span> · June 2024</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.6.023297" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.6.023297</a>
         </div>
-        <div class="pub-item">
-          <span class="pub-num">11</span>
-          <div class="pub-body">
-            <p class="pub-title">Cubic ferromagnet and emergent U(1) symmetry on its phase boundary</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review B</span> &middot; 2023年6月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.107.224406" target="_blank" rel="noopener">doi:10.1103/PhysRevB.107.224406</a>
-          </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">13</span>
+        <div>
+          <p class="pub-title">Generating Function for Projected Entangled-Pair States</p>
+          <p class="pub-meta"><span class="pub-j">PRX Quantum</span> · March 2024</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PRXQuantum.5.010335" target="_blank" rel="noopener">doi:10.1103/PRXQuantum.5.010335</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2022</div>
-        <div class="pub-item">
-          <span class="pub-num">10</span>
-          <div class="pub-body">
-            <p class="pub-title">Variational tensor network operator</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review Research</span> &middot; 2022年11月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.4.043153" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.4.043153</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2023</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">12</span>
+        <div>
+          <p class="pub-title">Intertwined orders and electronic structure in superconducting vortex halos</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review Research</span> · July 2023</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.5.033028" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.5.033028</a>
         </div>
-        <div class="pub-item">
-          <span class="pub-num">9</span>
-          <div class="pub-body">
-            <p class="pub-title">Field-induced Bose-Einstein condensation and supersolid in the two-dimensional Kondo necklace</p>
-            <p class="pub-meta"><span class="pub-journal">Communications Physics</span> &middot; 2022年5月</p>
-            <a class="pub-doi" href="https://doi.org/10.1038/s42005-022-00913-3" target="_blank" rel="noopener">doi:10.1038/s42005-022-00913-3</a>
-          </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">11</span>
+        <div>
+          <p class="pub-title">Cubic ferromagnet and emergent U(1) symmetry on its phase boundary</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review B</span> · June 2023</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.107.224406" target="_blank" rel="noopener">doi:10.1103/PhysRevB.107.224406</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2021</div>
-        <div class="pub-item">
-          <span class="pub-num">8</span>
-          <div class="pub-body">
-            <p class="pub-title">Generating function for tensor network diagrammatic summation</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review B</span> &middot; 2021年5月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.103.205155" target="_blank" rel="noopener">doi:10.1103/PhysRevB.103.205155</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2022</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">10</span>
+        <div>
+          <p class="pub-title">Variational tensor network operator</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review Research</span> · November 2022</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.4.043153" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.4.043153</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">9</span>
+        <div>
+          <p class="pub-title">Field-induced Bose-Einstein condensation and supersolid in the two-dimensional Kondo necklace</p>
+          <p class="pub-meta"><span class="pub-j">Communications Physics</span> · May 2022</p>
+          <a class="pub-doi" href="https://doi.org/10.1038/s42005-022-00913-3" target="_blank" rel="noopener">doi:10.1038/s42005-022-00913-3</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2020</div>
-        <div class="pub-item">
-          <span class="pub-num">7</span>
-          <div class="pub-body">
-            <p class="pub-title">Competing quantum phases of hard-core bosons with tilted dipole-dipole interaction</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review A</span> &middot; 2020年11月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevA.102.053306" target="_blank" rel="noopener">doi:10.1103/PhysRevA.102.053306</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <span class="pub-num">6</span>
-          <div class="pub-body">
-            <p class="pub-title">Frustration-induced supersolid phases of extended Bose&ndash;Hubbard model in the hard-core limit</p>
-            <p class="pub-meta"><span class="pub-journal">Journal of Physics: Condensed Matter</span> &middot; 2020年10月</p>
-            <a class="pub-doi" href="https://doi.org/10.1088/1361-648X/aba383" target="_blank" rel="noopener">doi:10.1088/1361-648X/aba383</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2021</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">8</span>
+        <div>
+          <p class="pub-title">Generating function for tensor network diagrammatic summation</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review B</span> · May 2021</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.103.205155" target="_blank" rel="noopener">doi:10.1103/PhysRevB.103.205155</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2019</div>
-        <div class="pub-item">
-          <span class="pub-num">5</span>
-          <div class="pub-body">
-            <p class="pub-title">Utilization of Renormalized Mean-Field Theory upon Novel Quantum Materials <span class="badge badge-book">書籍</span></p>
-            <p class="pub-meta"><span class="pub-journal">Springer Theses</span> &middot; 2019年</p>
-            <a class="pub-doi" href="https://doi.org/10.1007/978-981-13-7824-9" target="_blank" rel="noopener">doi:10.1007/978-981-13-7824-9</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2020</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">7</span>
+        <div>
+          <p class="pub-title">Competing quantum phases of hard-core bosons with tilted dipole-dipole interaction</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review A</span> · November 2020</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevA.102.053306" target="_blank" rel="noopener">doi:10.1103/PhysRevA.102.053306</a>
         </div>
-        <div class="pub-item">
-          <span class="pub-num">4</span>
-          <div class="pub-body">
-            <p class="pub-title">Evolution of Pairing Orders between Pseudogap and Superconducting Phases of Cuprate Superconductors</p>
-            <p class="pub-meta"><span class="pub-journal">Scientific Reports</span> &middot; 2019年2月</p>
-            <a class="pub-doi" href="https://doi.org/10.1038/s41598-018-38288-7" target="_blank" rel="noopener">doi:10.1038/s41598-018-38288-7</a>
-          </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">6</span>
+        <div>
+          <p class="pub-title">Frustration-induced supersolid phases of extended Bose–Hubbard model in the hard-core limit</p>
+          <p class="pub-meta"><span class="pub-j">Journal of Physics: Condensed Matter</span> · October 2020</p>
+          <a class="pub-doi" href="https://doi.org/10.1088/1361-648X/aba383" target="_blank" rel="noopener">doi:10.1088/1361-648X/aba383</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2018</div>
-        <div class="pub-item">
-          <span class="pub-num">3</span>
-          <div class="pub-body">
-            <p class="pub-title">Competing orders in the Hofstadter t-J model</p>
-            <p class="pub-meta"><span class="pub-journal">Physical Review B</span> &middot; 2018年1月</p>
-            <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.97.035154" target="_blank" rel="noopener">doi:10.1103/PhysRevB.97.035154</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2019</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">5</span>
+        <div>
+          <p class="pub-title">Utilization of Renormalized Mean-Field Theory upon Novel Quantum Materials <span class="badge badge-book">Book</span></p>
+          <p class="pub-meta"><span class="pub-j">Springer Theses</span> · 2019</p>
+          <a class="pub-doi" href="https://doi.org/10.1007/978-981-13-7824-9" target="_blank" rel="noopener">doi:10.1007/978-981-13-7824-9</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">4</span>
+        <div>
+          <p class="pub-title">Evolution of Pairing Orders between Pseudogap and Superconducting Phases of Cuprate Superconductors</p>
+          <p class="pub-meta"><span class="pub-j">Scientific Reports</span> · February 2019</p>
+          <a class="pub-doi" href="https://doi.org/10.1038/s41598-018-38288-7" target="_blank" rel="noopener">doi:10.1038/s41598-018-38288-7</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2017</div>
-        <div class="pub-item">
-          <span class="pub-num">2</span>
-          <div class="pub-body">
-            <p class="pub-title">Incommensurate charge ordered states in the t&ndash;t'&ndash;J model</p>
-            <p class="pub-meta"><span class="pub-journal">New Journal of Physics</span> &middot; 2017年1月</p>
-            <a class="pub-doi" href="https://doi.org/10.1088/1367-2630/19/1/013028" target="_blank" rel="noopener">doi:10.1088/1367-2630/19/1/013028</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2018</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">3</span>
+        <div>
+          <p class="pub-title">Competing orders in the Hofstadter t-J model</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review B</span> · January 2018</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.97.035154" target="_blank" rel="noopener">doi:10.1103/PhysRevB.97.035154</a>
         </div>
       </div>
 
-      <div class="pub-group">
-        <div class="pub-year">2016</div>
-        <div class="pub-item">
-          <span class="pub-num">1</span>
-          <div class="pub-body">
-            <p class="pub-title">Genesis of charge orders in high temperature superconductors</p>
-            <p class="pub-meta"><span class="pub-journal">Scientific Reports</span> &middot; 2016年1月</p>
-            <a class="pub-doi" href="https://doi.org/10.1038/srep18675" target="_blank" rel="noopener">doi:10.1038/srep18675</a>
-          </div>
+      <div class="pub-yr-row"><span class="pub-yr">2017</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">2</span>
+        <div>
+          <p class="pub-title">Incommensurate charge ordered states in the t–t'–J model</p>
+          <p class="pub-meta"><span class="pub-j">New Journal of Physics</span> · January 2017</p>
+          <a class="pub-doi" href="https://doi.org/10.1088/1367-2630/19/1/013028" target="_blank" rel="noopener">doi:10.1088/1367-2630/19/1/013028</a>
         </div>
       </div>
 
-    </section>
+      <div class="pub-yr-row"><span class="pub-yr">2016</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">1</span>
+        <div>
+          <p class="pub-title">Genesis of charge orders in high temperature superconductors</p>
+          <p class="pub-meta"><span class="pub-j">Scientific Reports</span> · January 2016</p>
+          <a class="pub-doi" href="https://doi.org/10.1038/srep18675" target="_blank" rel="noopener">doi:10.1038/srep18675</a>
+        </div>
+      </div>
 
-    <footer>
-      &copy; 2026 杜 威霖 &nbsp;&middot;&nbsp;
-      <a href="https://orcid.org/0000-0002-3340-4963" target="_blank" rel="noopener">ORCID 0000-0002-3340-4963</a>
-      &nbsp;&middot;&nbsp;
-      <a href="mailto:weilintu@keio.jp">weilintu@keio.jp</a>
-    </footer>
+    </div>
+  </div>
 
-  </div><!-- /content-ja -->
+  <footer>
+    &copy; 2026 Wei-Lin Tu &nbsp;·&nbsp;
+    <a href="https://orcid.org/0000-0002-3340-4963" target="_blank" rel="noopener">ORCID 0000-0002-3340-4963</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:weilintu@keio.jp">weilintu@keio.jp</a>
+  </footer>
 
-</main>
+</div><!-- /content-en -->
+
+
+<!-- ══════════ JAPANESE ══════════ -->
+<div id="content-ja" hidden>
+
+  <!-- Hero -->
+  <div class="hero-section" id="hero-ja">
+    <div class="hero-grid">
+
+      <div class="hero-left">
+        <span class="hero-eye">理論凝縮系物理学</span>
+        <h1 class="hero-name">杜 威霖</h1>
+        <p class="hero-pos">プロジェクト講師</p>
+        <p class="hero-uni">慶應義塾大学 理工学部</p>
+        <p class="hero-bio">テンソルネットワークアンザッツ（行列積状態 MPS・射影絡み合いペア状態 PEPS）を計算基盤として、量子多体系・量子磁性・冷却原子系・強相関フェルミオン系（高温超伝導体を含む）の理解を目指した研究を行っています。</p>
+        <div class="hero-links">
+          <a class="h-link" href="mailto:weilintu@keio.jp">メール</a>
+          <a class="h-link" href="https://orcid.org/0000-0002-3340-4963"               target="_blank" rel="noopener">ORCID</a>
+          <a class="h-link" href="https://scholar.google.com/citations?user=oEdpJ1UAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+          <a class="h-link" href="https://www.researchgate.net/profile/Wei-Lin-Tu"     target="_blank" rel="noopener">ResearchGate</a>
+          <a class="h-link" href="https://researchmap.jp/weilintu"                     target="_blank" rel="noopener">researchmap</a>
+          <a class="h-link" href="https://twitter.com/weilin_tu"                       target="_blank" rel="noopener">X / Twitter</a>
+          <a class="h-link" href="https://github.com/weilintu"                         target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+
+      <div class="hero-photo-wrap">
+        <svg class="qai-deco" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="#3a5f96" stroke-width="0.9">
+            <line class="qai-edge" x1="30"  y1="60"  x2="150" y2="30"/>
+            <line class="qai-edge" x1="150" y1="30"  x2="265" y2="70"/>
+            <line class="qai-edge" x1="265" y1="70"  x2="275" y2="185"/>
+            <line class="qai-edge" x1="150" y1="30"  x2="185" y2="145"/>
+            <line class="qai-edge" x1="30"  y1="60"  x2="60"  y2="175"/>
+            <line class="qai-edge" x1="60"  y1="175" x2="185" y2="145"/>
+            <line class="qai-edge" x1="185" y1="145" x2="275" y2="185"/>
+            <line class="qai-edge" x1="60"  y1="175" x2="135" y2="260"/>
+            <line class="qai-edge" x1="135" y1="260" x2="250" y2="268"/>
+            <line class="qai-edge" x1="250" y1="268" x2="275" y2="185"/>
+            <line class="qai-edge" x1="185" y1="145" x2="135" y2="260"/>
+          </g>
+          <path class="qai-wave"  d="M15,185 Q55,162 95,185 Q135,208 175,185 Q215,162 255,185 Q278,198 295,185" fill="none" stroke="#3a5f96" stroke-width="1"/>
+          <path class="qai-wave2" d="M15,115 Q50,97  90,115 Q130,133 170,115 Q210,97  250,115 Q278,128 295,115" fill="none" stroke="#3a5f96" stroke-width="0.7"/>
+          <circle class="qai-node" cx="30"  cy="60"  r="3.5" fill="#3a5f96"/>
+          <circle class="qai-node" cx="150" cy="30"  r="4.5" fill="#3a5f96"/>
+          <circle class="qai-node" cx="265" cy="70"  r="3"   fill="#3a5f96"/>
+          <circle class="qai-node" cx="185" cy="145" r="4"   fill="#3a5f96"/>
+          <circle class="qai-node" cx="60"  cy="175" r="3.5" fill="#3a5f96"/>
+          <circle class="qai-node" cx="135" cy="260" r="3.5" fill="#3a5f96"/>
+        </svg>
+        <img class="hero-photo"
+             src="https://avatars.githubusercontent.com/u/33544190?v=4"
+             alt="杜 威霖" />
+      </div>
+
+    </div>
+
+    <div class="hero-kw-strip">
+      <span class="kw">テンソルネットワーク</span>
+      <span class="kw">MPS・PEPS</span>
+      <span class="kw">量子多体系</span>
+      <span class="kw">凝縮系理論</span>
+      <span class="kw">量子磁性</span>
+      <span class="kw">超伝導</span>
+      <span class="kw">冷却原子系</span>
+    </div>
+  </div>
+
+  <!-- 概要 -->
+  <div class="section" id="about-ja">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">概要</span>
+        <h2 class="sec-ttl">研究概要</h2>
+      </div>
+      <p class="body-text">私は、強相関量子系に対するテンソルネットワーク法の開発と応用を専門とする理論凝縮系物理学者です。変分テンソルネットワーク演算子やダイアグラム和の生成関数といった基礎アルゴリズムの開発から、量子相転移、超固体相、ボース–アインシュタイン凝縮、銅酸化物超伝導体における秩序の競合まで、幅広い研究を行っています。</p>
+      <p class="body-text">日本・韓国・フランス・台湾において研究職を歴任し、現在は慶應義塾大学理工学部のプロジェクト講師を務めています。研究成果は <em>PRX Quantum</em>、<em>Physical Review Research</em>、<em>Communications Physics</em>、<em>Scientific Reports</em> などに掲載されています。</p>
+    </div>
+  </div>
+
+  <!-- 経歴 -->
+  <div class="section alt" id="exp-ja">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">経歴</span>
+        <h2 class="sec-ttl">学術職歴</h2>
+      </div>
+      <div>
+        <div class="tl-item">
+          <div class="tl-date">2023年5月 – 現在</div>
+          <div>
+            <p class="tl-role">プロジェクト講師 <span class="badge badge-now">現職</span></p>
+            <p class="tl-org">慶應義塾大学 — 日本</p>
+            <p class="tl-dept">理工学部</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2021年3月 – 2023年4月</div>
+          <div>
+            <p class="tl-role">研究教授</p>
+            <p class="tl-org">高麗大学校 — 韓国</p>
+            <p class="tl-dept">ディスプレイ・半導体物理学部門</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2021年3月 – 2022年2月</div>
+          <div>
+            <p class="tl-role">ISSP特任研究員</p>
+            <p class="tl-org">東京大学 — 日本</p>
+            <p class="tl-dept">物性研究所（ISSP）</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2020年10月 – 2021年2月</div>
+          <div>
+            <p class="tl-role">プロジェクト研究員</p>
+            <p class="tl-org">東京大学 — 日本</p>
+            <p class="tl-dept">物性研究所（ISSP）</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2019年10月 – 2020年9月</div>
+          <div>
+            <p class="tl-role">ISSP特任研究員</p>
+            <p class="tl-org">東京大学 — 日本</p>
+            <p class="tl-dept">物性研究所（ISSP）</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2012年8月 – 2018年7月</div>
+          <div>
+            <p class="tl-role">客員研究助手</p>
+            <p class="tl-org">中央研究院 — 台湾</p>
+            <p class="tl-dept">物理学研究所</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 学歴 -->
+  <div class="section" id="edu-ja">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">学歴</span>
+        <h2 class="sec-ttl">学術背景</h2>
+      </div>
+      <div>
+        <div class="tl-item">
+          <div class="tl-date">2015年9月 – 2018年9月</div>
+          <div>
+            <p class="tl-role">理学博士（物理学）</p>
+            <p class="tl-org">ポール・サバティエ大学（トゥールーズ第3大学） — フランス</p>
+            <p class="tl-dept">理論物理学研究室（LPT）</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2012年9月 – 2018年6月</div>
+          <div>
+            <p class="tl-role">理学博士（物理学）</p>
+            <p class="tl-org">国立台湾大学 — 台湾</p>
+            <p class="tl-dept">物理学科</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2008年9月 – 2012年6月</div>
+          <div>
+            <p class="tl-role">理学士（物理学）</p>
+            <p class="tl-org">国立台湾大学 — 台湾</p>
+            <p class="tl-dept">物理学科</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 業績 -->
+  <div class="section alt" id="pub-ja">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="sec-eye">業績</span>
+        <h2 class="sec-ttl">主要論文</h2>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2026</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">15</span>
+        <div>
+          <p class="pub-title">Dataset for "Probing the Dynamical Structure Factor of Quantum Spin Chains…" <span class="badge badge-data">データセット</span></p>
+          <p class="pub-meta"><span class="pub-j">Zenodo</span> · 2026年1月</p>
+          <a class="pub-doi" href="https://doi.org/10.5281/zenodo.18408711" target="_blank" rel="noopener">doi:10.5281/zenodo.18408711</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2024</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">14</span>
+        <div>
+          <p class="pub-title">Programmable order by disorder effect and underlying phases through dipolar quantum simulators</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review Research</span> · 2024年6月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.6.023297" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.6.023297</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">13</span>
+        <div>
+          <p class="pub-title">Generating Function for Projected Entangled-Pair States</p>
+          <p class="pub-meta"><span class="pub-j">PRX Quantum</span> · 2024年3月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PRXQuantum.5.010335" target="_blank" rel="noopener">doi:10.1103/PRXQuantum.5.010335</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2023</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">12</span>
+        <div>
+          <p class="pub-title">Intertwined orders and electronic structure in superconducting vortex halos</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review Research</span> · 2023年7月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.5.033028" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.5.033028</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">11</span>
+        <div>
+          <p class="pub-title">Cubic ferromagnet and emergent U(1) symmetry on its phase boundary</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review B</span> · 2023年6月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.107.224406" target="_blank" rel="noopener">doi:10.1103/PhysRevB.107.224406</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2022</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">10</span>
+        <div>
+          <p class="pub-title">Variational tensor network operator</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review Research</span> · 2022年11月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevResearch.4.043153" target="_blank" rel="noopener">doi:10.1103/PhysRevResearch.4.043153</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">9</span>
+        <div>
+          <p class="pub-title">Field-induced Bose-Einstein condensation and supersolid in the two-dimensional Kondo necklace</p>
+          <p class="pub-meta"><span class="pub-j">Communications Physics</span> · 2022年5月</p>
+          <a class="pub-doi" href="https://doi.org/10.1038/s42005-022-00913-3" target="_blank" rel="noopener">doi:10.1038/s42005-022-00913-3</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2021</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">8</span>
+        <div>
+          <p class="pub-title">Generating function for tensor network diagrammatic summation</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review B</span> · 2021年5月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.103.205155" target="_blank" rel="noopener">doi:10.1103/PhysRevB.103.205155</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2020</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">7</span>
+        <div>
+          <p class="pub-title">Competing quantum phases of hard-core bosons with tilted dipole-dipole interaction</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review A</span> · 2020年11月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevA.102.053306" target="_blank" rel="noopener">doi:10.1103/PhysRevA.102.053306</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">6</span>
+        <div>
+          <p class="pub-title">Frustration-induced supersolid phases of extended Bose–Hubbard model in the hard-core limit</p>
+          <p class="pub-meta"><span class="pub-j">Journal of Physics: Condensed Matter</span> · 2020年10月</p>
+          <a class="pub-doi" href="https://doi.org/10.1088/1361-648X/aba383" target="_blank" rel="noopener">doi:10.1088/1361-648X/aba383</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2019</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">5</span>
+        <div>
+          <p class="pub-title">Utilization of Renormalized Mean-Field Theory upon Novel Quantum Materials <span class="badge badge-book">書籍</span></p>
+          <p class="pub-meta"><span class="pub-j">Springer Theses</span> · 2019年</p>
+          <a class="pub-doi" href="https://doi.org/10.1007/978-981-13-7824-9" target="_blank" rel="noopener">doi:10.1007/978-981-13-7824-9</a>
+        </div>
+      </div>
+      <div class="pub-row">
+        <span class="pub-n">4</span>
+        <div>
+          <p class="pub-title">Evolution of Pairing Orders between Pseudogap and Superconducting Phases of Cuprate Superconductors</p>
+          <p class="pub-meta"><span class="pub-j">Scientific Reports</span> · 2019年2月</p>
+          <a class="pub-doi" href="https://doi.org/10.1038/s41598-018-38288-7" target="_blank" rel="noopener">doi:10.1038/s41598-018-38288-7</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2018</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">3</span>
+        <div>
+          <p class="pub-title">Competing orders in the Hofstadter t-J model</p>
+          <p class="pub-meta"><span class="pub-j">Physical Review B</span> · 2018年1月</p>
+          <a class="pub-doi" href="https://doi.org/10.1103/PhysRevB.97.035154" target="_blank" rel="noopener">doi:10.1103/PhysRevB.97.035154</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2017</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">2</span>
+        <div>
+          <p class="pub-title">Incommensurate charge ordered states in the t–t'–J model</p>
+          <p class="pub-meta"><span class="pub-j">New Journal of Physics</span> · 2017年1月</p>
+          <a class="pub-doi" href="https://doi.org/10.1088/1367-2630/19/1/013028" target="_blank" rel="noopener">doi:10.1088/1367-2630/19/1/013028</a>
+        </div>
+      </div>
+
+      <div class="pub-yr-row"><span class="pub-yr">2016</span><div class="pub-yr-line"></div></div>
+      <div class="pub-row">
+        <span class="pub-n">1</span>
+        <div>
+          <p class="pub-title">Genesis of charge orders in high temperature superconductors</p>
+          <p class="pub-meta"><span class="pub-j">Scientific Reports</span> · 2016年1月</p>
+          <a class="pub-doi" href="https://doi.org/10.1038/srep18675" target="_blank" rel="noopener">doi:10.1038/srep18675</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 杜 威霖 &nbsp;·&nbsp;
+    <a href="https://orcid.org/0000-0002-3340-4963" target="_blank" rel="noopener">ORCID 0000-0002-3340-4963</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:weilintu@keio.jp">weilintu@keio.jp</a>
+  </footer>
+
+</div><!-- /content-ja -->
+
 
 <script>
-  const SIDEBAR = {
-    en: { name: 'Wei-Lin Tu',  role: 'Project Lecturer',      affil: 'Keio University, Japan' },
-    ja: { name: '杜 威霖',     role: 'プロジェクト講師',        affil: '慶應義塾大学・日本' }
-  };
-
   function setLang(lang) {
-    // Show/hide main content blocks
+    // Show/hide content
     document.getElementById('content-en').hidden = (lang !== 'en');
     document.getElementById('content-ja').hidden = (lang !== 'ja');
 
-    // Update sidebar text
-    document.getElementById('sb-name').textContent  = SIDEBAR[lang].name;
-    document.getElementById('sb-role').textContent  = SIDEBAR[lang].role;
-    document.getElementById('sb-affil').textContent = SIDEBAR[lang].affil;
-
-    // Update nav link labels and hrefs
-    document.querySelectorAll('.sb-nav a').forEach(a => {
-      const base = a.dataset.base;
-      const suffix = lang === 'ja' ? '-ja' : '';
-      // hero section has id "hero" / "hero-ja" (not "about" / "about-ja")
-      a.href = '#' + (base === 'hero' ? (lang === 'ja' ? 'hero-ja' : 'hero') : base + suffix);
-      // Update label text (skip the dot span)
-      a.childNodes.forEach(node => {
-        if (node.nodeType === 3) node.textContent = ' ' + a.dataset[lang];
-      });
-    });
-
-    // Toggle active buttons
+    // Toggle buttons
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
 
-    // Update html lang attribute
+    // Update nav logo
+    document.querySelector('.nav-logo').textContent = lang === 'ja' ? '杜 威霖' : 'Wei-Lin Tu';
+
+    // Update nav link labels and hrefs
+    const sfx = lang === 'ja' ? '-ja' : '-en';
+    document.querySelectorAll('.nav-link').forEach(a => {
+      a.textContent = a.dataset[lang];
+      const base = a.dataset.base;
+      const idMap = { about: 'about', experience: 'exp', education: 'edu', publications: 'pub' };
+      a.href = '#' + idMap[base] + sfx;
+    });
+
+    // html lang attribute
     document.documentElement.lang = lang === 'ja' ? 'ja' : 'en';
 
-    // Persist preference
-    try { localStorage.setItem('lang', lang); } catch(e) {}
+    // Persist
+    try { localStorage.setItem('wlt-lang', lang); } catch(e) {}
   }
 
-  // Init from saved preference or default English
+  // Restore saved preference
   (function() {
     let saved = 'en';
-    try { saved = localStorage.getItem('lang') || 'en'; } catch(e) {}
+    try { saved = localStorage.getItem('wlt-lang') || 'en'; } catch(e) {}
     setLang(saved);
   })();
 </script>
